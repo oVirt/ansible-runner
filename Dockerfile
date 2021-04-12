@@ -17,6 +17,7 @@ RUN if [ "$ANSIBLE_BRANCH" != "" ] ; then \
       echo "Installing requirements.txt" ; \
       cp /tmp/src/tools/requirements.txt /tmp/src/requirements.txt ; \
     fi
+RUN dnf install curl-devel gcc python38-devel openssl-devel libxml2-devel -y
 RUN assemble
 
 FROM $PYTHON_BASE_IMAGE
@@ -45,6 +46,7 @@ RUN for dir in \
       /etc/group ; \
     do touch $file ; chmod g+rw $file ; chgrp root $file ; done
 
+RUN ansible-galaxy collection install ovirt.ovirt -p /home/runner/.ansible/collections
 VOLUME /runner
 
 WORKDIR /runner
