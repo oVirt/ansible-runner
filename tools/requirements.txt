@@ -9,3 +9,6 @@ pexpect>=4.5
 python-daemon
 pyyaml
 six
+ovirt-engine-sdk-python
+ovirt_imageio
+netaddr

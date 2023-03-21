@@ -24,6 +24,9 @@ RUN if [ "$ANSIBLE_BRANCH" != "" ] ; then \
 # over using existing wheels. Do this upstream too so we can better catch
 # issues.
 
+
+RUN dnf install libcurl-devel curl-devel gcc python38-devel openssl-devel libxml2-devel -y
+
 # Commenting due to failures in CI
 # ENV PIP_OPTS=--no-build-isolation
 RUN assemble
@@ -35,6 +38,7 @@ COPY --from=builder /output/ /output
 RUN /output/install-from-bindep \
   && rm -rf /output
 
+RUN dnf install qemu-img -y
 # In OpenShift, container will run as a random uid number and gid 0. Make sure things
 # are writeable by the root group.
 RUN for dir in \
@@ -54,6 +58,7 @@ RUN for dir in \
       /etc/group ; \
     do touch $file ; chmod g+rw $file ; chgrp root $file ; done
 
+RUN ansible-galaxy collection install ovirt.ovirt ansible.netcommon -p /usr/share/ansible/collections
 WORKDIR /runner
 
 # NB: this appears to be necessary for container builds based on this container, since we can't rely on the entrypoint
