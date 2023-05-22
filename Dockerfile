@@ -58,7 +58,7 @@ RUN for dir in \
       /etc/group ; \
     do touch $file ; chmod g+rw $file ; chgrp root $file ; done
 
-RUN ansible-galaxy collection install ovirt.ovirt ansible.netcommon -p /usr/share/ansible/collections
+RUN ansible-galaxy collection install ovirt.ovirt ansible.netcommon ansible.posix -p /usr/share/ansible/collections
 WORKDIR /runner
 
 # NB: this appears to be necessary for container builds based on this container, since we can't rely on the entrypoint
